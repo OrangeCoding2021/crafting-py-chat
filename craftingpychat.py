@@ -29,17 +29,28 @@ def menu(file):
     
     if answer == '1':
         displayAll(file)
+    elif answer == '2':
+        writeToFile(file)
         
 def displayAll(file):
     # Open GZip file in the read text mode
     with g.open(file, 'rt') as f:
             for line in f.readlines():
                 print(line) 
-
-
+def writeToFile(file):
+    try:
+        with g.open(file, 'rt') as f:
+            with open(file+".txt",'w') as out:
+                
+                out.write(f.read())
+    except FileNotFoundError:
+        print("Uh oh.. you probably typed this file wrong. Please enter filename and extension only.")
     
 if __name__ == '__main__':
     # Get file location from user
-    file = input("File Location: ")
-    displayMenu()
-    menu(file)
+    rootOf = input("Root: ")
+    while True:
+        
+        file = rootOf + input("File Location: ")
+        displayMenu()
+        menu(file)
