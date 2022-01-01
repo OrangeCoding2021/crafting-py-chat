@@ -16,9 +16,10 @@ import gzip as g
 def displayMenu():
     menu = """
     1. Display all
-    2. Display sections
-    3. Change file selection
-    4. Use list of files
+    2. Write all to file
+    3. Display Sections
+    4. Change file selection
+    5. Use list of files
     """
     print(menu)
 def menu(file):
@@ -32,6 +33,15 @@ def menu(file):
     elif answer == '2':
         writeToFile(file)
         
+def dispSections(file, sects):
+    with g.open(file, 'rt') as f:
+        leng = len(f.readlines())
+        amount = leng//sects
+        left = leng%sects
+        count = 0
+        for i in amount:
+            print(f.readlines(i*count,)
+            count += sects
 def displayAll(file):
     # Open GZip file in the read text mode
     with g.open(file, 'rt') as f:
