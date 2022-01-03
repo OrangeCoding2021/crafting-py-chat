@@ -32,16 +32,28 @@ def menu(file):
         displayAll(file)
     elif answer == '2':
         writeToFile(file)
+    elif answer == '3':
+        sects = int(input("how many lines display at a time?: "))
+        dispSections(file, sects)
         
 def dispSections(file, sects):
     with g.open(file, 'rt') as f:
         leng = len(f.readlines())
         amount = leng//sects
         left = leng%sects
-        count = 0
-        for i in amount:
-            print(f.readlines(i*count,)
-            count += sects
+        count=0
+        for i in range(amount):
+            for j in range(sects-1):
+                print(f.readlines()[count+1])
+                count+=1
+            dummy=input("does this work")
+            #start=i*sects
+            #end = i*sects+sects
+            
+            #if i == amount:
+             #   print(f.readlines(i*sects,i*sects+sects))
+            #dummy = input(' ')
+            
 def displayAll(file):
     # Open GZip file in the read text mode
     with g.open(file, 'rt') as f:
