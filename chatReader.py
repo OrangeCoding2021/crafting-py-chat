@@ -4,10 +4,13 @@ Created on Tue Jan  4 09:49:42 2022
 
 @author: OrangeCoding2021
 """
-import colorama
+
+
+
+
 from colorama import Fore
 
-example = "Hi §cHello "
+#example = "Hi §cHello "
 # Split at the prefix for colors and effects. Then analyxe each new string and based on first character add color
 #Create a check for if it split at start or not
 # splitText = example.split('§')
@@ -35,13 +38,16 @@ def colorIn(char,st,temp,color):
     return color + st
     
 def convertChat(txt,prefix='§'):
-    splitText = example.split('§')
+    """Returns the string passed but now in color!
+    Prefix typically should be § or &"""
+    splitText = txt.split('§')
     for i, st in enumerate(splitText):
         # Get first char in string 
         first = st[0]
         
        
         if first == '0':
+            
             temp=colorIn('0',st,temp,Fore.RED)
         elif first == '1':
             temp=colorIn('1',st,temp,Fore.GREEN)
@@ -89,9 +95,13 @@ def convertChat(txt,prefix='§'):
             temp = splitText[i]
         
         splitText[i]=temp
-    return splitText
+        # Return the colored string
+    return ''.join(splitText)
 
-splitText = convertChat(example)
-for txt in splitText:
-    print(txt)
+
+if __name__ == "__main__":
+    text = convertChat(example)
+    print(text)
+    for txt in text:
+        print(txt)
     

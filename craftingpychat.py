@@ -8,7 +8,7 @@ Created on Wed Dec 29 21:18:22 2021
 # Import needed modules
 import gzip as g
 
-
+from chatReader import convertChat
 
 
 
@@ -37,28 +37,51 @@ def menu(file):
         dispSections(file, sects)
         
 def dispSections(file, sects):
-    with g.open(file, 'rt') as f:
-        leng = len(f.readlines())
-        amount = leng//sects
-        left = leng%sects
-        count=0
-        for i in range(amount):
-            for j in range(sects-1):
-                print(f.readlines()[count+1])
-                count+=1
-            dummy=input("does this work")
-            #start=i*sects
-            #end = i*sects+sects
+    try:
+        with g.open(file, 'rt') as f:
+            # Few different ways to do this, another way is probably better but happy to have found one way at least
+            fList = list(f)
+            leng = len(fList)
+            print(str(leng))
+            amount = leng//sects
+            left = leng%sects
+            count=0
+            # For each length of sections
+            for i in range(amount):
+                
+                for j in range(sects):
+                    print(fList[count])
+                    count+=1
+
+                dummy=input(f"Hit Enter to continue. Lines displayed so far: {count}/{leng}")
+                if not count+100 <= leng:
+                    for line in fList[count:count+left]:
+                        print(line)
+                        count += 1
+                    print(f"Lines displayed so far: {count}/{leng}")
+                        
+                    
+          
+                    #start=i*sects
+                #end = i*sects+sects
             
-            #if i == amount:
-             #   print(f.readlines(i*sects,i*sects+sects))
-            #dummy = input(' ')
-            
+                #if i == amount:
+                #   print(f.readlines(i*sects,i*sects+sects))
+                #dummy = input(' ')
+    except FileNotFoundError:
+        print("Uh oh.. you probably typed this file wrong. Please enter filename and extension only.")
 def displayAll(file):
-    # Open GZip file in the read text mode
-    with g.open(file, 'rt') as f:
-            for line in f.readlines():
-                print(line) 
+    try:
+        # Open GZip file in the read text mode
+        with g.open(file, 'rt') as f:
+                for line in f.readlines():
+                    print(convertChat(line,'§')) 
+                    
+                    # Look into checking what throws OSError
+    except FileNotFoundError:
+        print("File not found. Prob forgot to do the root right oops")
+                
+                
 def writeToFile(file):
     try:
         with g.open(file, 'rt') as f:
