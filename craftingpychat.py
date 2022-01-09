@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 """
 Created on Wed Dec 29 21:18:22 2021
 
@@ -10,23 +10,21 @@ import gzip as g
 
 from chatReader import convertChat
 
-
-
-    
 def displayMenu():
     menu = """
-    1. Display all
-    2. Write all to file
-    3. Display Sections
-    4. Change file selection
-    5. Use list of files
+1. Display all
+2. Write all to file
+3. Display Sections
+4. Redo file info (leaving one as blank keeps old)
+ 
     """
     print(menu)
+    
 def menu(file):
 
     answer = input("Enter a menu choice: ")
     
-    # Add logic to re display or exit if invalid choice
+    
     
     if answer == '1':
         displayAll(file)
@@ -35,7 +33,12 @@ def menu(file):
     elif answer == '3':
         sects = int(input("how many lines display at a time?: "))
         dispSections(file, sects)
-        
+    elif answer == '4':
+        rootOf = input("Root: ") 
+        rootOf, file = getRootAndFile()
+
+    else:
+        print("Invalid Option")
 def dispSections(file, sects):
     try:
         with g.open(file, 'rt') as f:
@@ -58,18 +61,12 @@ def dispSections(file, sects):
                     for line in fList[count:count+left]:
                         print(line)
                         count += 1
-                    print(f"Lines displayed so far: {count}/{leng}")
+                    print(f"Lines displayed: {count}/{leng}")
                         
-                    
-          
-                    #start=i*sects
-                #end = i*sects+sects
-            
-                #if i == amount:
-                #   print(f.readlines(i*sects,i*sects+sects))
-                #dummy = input(' ')
     except FileNotFoundError:
         print("Uh oh.. you probably typed this file wrong. Please enter filename and extension only.")
+        
+        
 def displayAll(file):
     try:
         # Open GZip file in the read text mode
@@ -91,11 +88,23 @@ def writeToFile(file):
     except FileNotFoundError:
         print("Uh oh.. you probably typed this file wrong. Please enter filename and extension only.")
     
+def getRootAndFile():
+    currentInp = input("Root: ") 
+    if currentInp != '':
+        rootOf = currentInp
+    currentInp  = input("File name: ")
+    if currentInp != '':
+        file = currentInp
+    
+    return rootOf, file
+    
 if __name__ == '__main__':
     # Get file location from user
-    rootOf = input("Root: ")
+     
+    rootOf, file = getRootAndFile()
+    file = rootOf + file
     while True:
         
-        file = rootOf + input("File Location: ")
+        
         displayMenu()
         menu(file)
