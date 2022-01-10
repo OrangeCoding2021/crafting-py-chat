@@ -10,7 +10,7 @@ Created on Tue Jan  4 09:49:42 2022
 
 from colorama import Fore
 
-#example = "Hi §cHello "
+#
 # Split at the prefix for colors and effects. Then analyxe each new string and based on first character add color
 #Create a check for if it split at start or not
 # splitText = example.split('§')
@@ -100,6 +100,7 @@ def convertChat(txt,prefix='§'):
 
 
 if __name__ == "__main__":
+    example = "Hi §cHello "
     text = convertChat(example)
     print(text)
     for txt in text:

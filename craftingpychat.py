@@ -7,8 +7,12 @@ Created on Wed Dec 29 21:18:22 2021
 
 # Import needed modules
 import gzip as g
+import os
 
+# Import own modules
 from chatReader import convertChat
+from iterateOverDirEntries import search, fullSearch
+
 
 def displayMenu():
     menu = """
@@ -16,29 +20,69 @@ def displayMenu():
 2. Write all to file
 3. Display Sections
 4. Redo file info (leaving one as blank keeps old)
+5. List files in a directory
+6. Search a whole file
+7. Search a whole directory (not implemented)
  
     """
     print(menu)
     
-def menu(file):
+def menu(dirOf,file):
 
     answer = input("Enter a menu choice: ")
     
     
-    
+    current = dirOf + file
     if answer == '1':
-        displayAll(file)
+        
+        displayAll(current)
     elif answer == '2':
-        writeToFile(file)
+        writeToFile(current)
     elif answer == '3':
         sects = int(input("how many lines display at a time?: "))
-        dispSections(file, sects)
+        dispSections(current, sects)
     elif answer == '4':
-        rootOf = input("Root: ") 
-        rootOf, file = getRootAndFile()
+        
+        dirOf, file = getDirAndFile()
+    elif answer == '5':
+        path = input("Enter Directory: ")
+        listDirInSections(path)
+    elif answer =='6':
+        term = input("Search Term: ")
+        search(current,term)
+    elif answer == '7':
+        term = "Search Term: "
+        search(current,term)
+        
 
     else:
         print("Invalid Option")
+        
+def listDirInSections(path='',sects=10):
+    dirList = os.listdir(path)
+    # Few different ways to do this, another way is probably better but happy to have found one way at least
+    
+    leng = len(dirList)
+    print(str(leng))
+    amount = leng//sects
+    left = leng%sects
+    count=0
+    # For each length of sections
+    for i in range(amount):
+        
+        for j in range(sects):
+            print(dirList[count])
+            count+=1
+
+        skip=input(f"Hit any key to continue. Lines displayed so far: {count}/{leng}")
+        if not count+100 <= leng:
+            for line in dirList[count:count+left]:
+                print(line)
+                count += 1
+            print(f"Lines displayed: {count}/{leng}")
+    
+    
+    
 def dispSections(file, sects):
     try:
         with g.open(file, 'rt') as f:
@@ -56,7 +100,7 @@ def dispSections(file, sects):
                     print(fList[count])
                     count+=1
 
-                dummy=input(f"Hit Enter to continue. Lines displayed so far: {count}/{leng}")
+                skip=input(f"Hit any key to continue. Lines displayed so far: {count}/{leng}")
                 if not count+100 <= leng:
                     for line in fList[count:count+left]:
                         print(line)
@@ -76,7 +120,7 @@ def displayAll(file):
                     
                     # Look into checking what throws OSError
     except FileNotFoundError:
-        print("File not found. Prob forgot to do the root right oops")
+        print("File not found. Prob forgot to do the directory right oops")
                 
                 
 def writeToFile(file):
@@ -88,23 +132,24 @@ def writeToFile(file):
     except FileNotFoundError:
         print("Uh oh.. you probably typed this file wrong. Please enter filename and extension only.")
     
-def getRootAndFile():
-    currentInp = input("Root: ") 
+    
+def getDirAndFile(dirOf=0,file=0):
+    currentInp = input("Directory: ") 
     if currentInp != '':
-        rootOf = currentInp
+        dirOf = currentInp
     currentInp  = input("File name: ")
     if currentInp != '':
         file = currentInp
     
-    return rootOf, file
+    return dirOf, file
     
 if __name__ == '__main__':
     # Get file location from user
      
-    rootOf, file = getRootAndFile()
-    file = rootOf + file
+    dirOf, file = getDirAndFile()
+    
     while True:
         
         
         displayMenu()
-        menu(file)
+        menu(dirOf,file)
