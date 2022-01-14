@@ -22,16 +22,16 @@ def search(file,term):
         try:
             with g.open((file), 'rt') as f:
                 for line in f.readlines():
-                    if 'search term' in line:
-                        print("search term found in " + str(file))
+                    if term in line:
+                        print(f"{term} found in " + str(file))
                        
         except g.BadGzipFile:
             print(str(file)+"is not a GZip file... trying open")
             try:
                 with open(file, 'r') as f:
                     for line in f.readlines():
-                        if 'search term' in line:
-                            print("search term found in " + str(file))
+                        if term in line:
+                            print(f"{term} found in " + str(file))
                             
                             
             except:

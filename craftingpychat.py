@@ -31,7 +31,7 @@ def menu(dirOf,file):
 
     answer = input("Enter a menu choice: ")
     
-    
+    # Directory the current file is found + the file name
     current = dirOf + file
     if answer == '1':
         
@@ -62,19 +62,27 @@ def listDirInSections(path='',sects=10):
     dirList = os.listdir(path)
     # Few different ways to do this, another way is probably better but happy to have found one way at least
     
+    # Get length of the list of files
     leng = len(dirList)
     print(str(leng))
+    
+    # Get the amount of times the loop can loop before running into a error
     amount = leng//sects
+    # Get the amount of items left after the safe looping
     left = leng%sects
     count=0
     # For each length of sections
     for i in range(amount):
         
+        # Display the amount of items requested
         for j in range(sects):
             print(dirList[count])
             count+=1
-
+        
         skip=input(f"Hit any key to continue. Lines displayed so far: {count}/{leng}")
+        
+        # For the remaining items after the safe loop. Could maybe move this out of the for i loop?
+        # Maybe not once a back option is implemented? Perhaps look at another page method?
         if not count+100 <= leng:
             for line in dirList[count:count+left]:
                 print(line)
@@ -84,6 +92,7 @@ def listDirInSections(path='',sects=10):
     
     
 def dispSections(file, sects):
+    # Try to open a gzip file, if not open it as a file. (Possibly a better way to check the file type beforehand?)
     try:
         with g.open(file, 'rt') as f:
             # Few different ways to do this, another way is probably better but happy to have found one way at least
@@ -134,6 +143,8 @@ def writeToFile(file):
     
     
 def getDirAndFile(dirOf=0,file=0):
+    
+    # Change the directory or file name being used. if left blank keep the currently used one.
     currentInp = input("Directory: ") 
     if currentInp != '':
         dirOf = currentInp
