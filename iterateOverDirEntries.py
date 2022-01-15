@@ -20,18 +20,22 @@ def fullSearch(term, path='', dateStart=0, dateEnd=0):
 def search(file,term):
 
         try:
+            linenum=0
             with g.open((file), 'rt') as f:
                 for line in f.readlines():
+                    linenum +=1
                     if term in line:
-                        print(f"{term} found in " + str(file))
+                        print(f"{term} found on line {linenum} " )
                        
         except g.BadGzipFile:
             print(str(file)+"is not a GZip file... trying open")
             try:
+                linenum=0
                 with open(file, 'r') as f:
                     for line in f.readlines():
+                        linenum +=1
                         if term in line:
-                            print(f"{term} found in " + str(file))
+                            print(f"{term} found on line {linenum} " )
                             
                             
             except:

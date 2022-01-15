@@ -10,12 +10,13 @@ import gzip as g
 import os
 
 # Import own modules
-from chatReader import convertChat
+#from chatReader import convertChat
 from iterateOverDirEntries import search, fullSearch
 
 
 def displayMenu():
     menu = """
+-------------------------------------------------
 1. Display all
 2. Write all to file
 3. Display Sections
@@ -23,7 +24,10 @@ def displayMenu():
 5. List files in a directory
 6. Search a whole file
 7. Search a whole directory (not implemented)
- 
+-------------------------------------------------
+
+
+
     """
     print(menu)
     
@@ -83,7 +87,7 @@ def listDirInSections(path='',sects=10):
         
         # For the remaining items after the safe loop. Could maybe move this out of the for i loop?
         # Maybe not once a back option is implemented? Perhaps look at another page method?
-        if not count+100 <= leng:
+        if not count+sects <= leng:
             for line in dirList[count:count+left]:
                 print(line)
                 count += 1
@@ -110,7 +114,7 @@ def dispSections(file, sects):
                     count+=1
 
                 skip=input(f"Hit any key to continue. Lines displayed so far: {count}/{leng}")
-                if not count+100 <= leng:
+                if not count+sects <= leng:
                     for line in fList[count:count+left]:
                         print(line)
                         count += 1
@@ -125,7 +129,7 @@ def displayAll(file):
         # Open GZip file in the read text mode
         with g.open(file, 'rt') as f:
                 for line in f.readlines():
-                    print(convertChat(line,'§')) 
+                    print(line) 
                     
                     # Look into checking what throws OSError
     except FileNotFoundError:
@@ -148,6 +152,7 @@ def getDirAndFile(dirOf=0,file=0):
     currentInp = input("Directory: ") 
     if currentInp != '':
         dirOf = currentInp
+
     currentInp  = input("File name: ")
     if currentInp != '':
         file = currentInp
