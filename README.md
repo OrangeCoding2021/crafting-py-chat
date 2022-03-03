@@ -11,7 +11,6 @@ By extending this idea, I hope to create a functional program that is easy to us
 - 
 
 # To-do
-+ Allow color display 50%
 + Config file/ Options 0%
 + Automatic detection of errors in directory or file names 0%
 - Fix name of file write all is put to 0%
