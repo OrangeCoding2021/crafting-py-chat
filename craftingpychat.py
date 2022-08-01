@@ -62,8 +62,7 @@ def menu(dirOf, file):
 
         dirOf, file = getDirAndFile()
     elif answer == '5':
-        path = input("Enter Directory: ")
-        listDirInSections(path)
+        listDirInSections(dirOf)
     elif answer == '6':
         term = input("Search Term: ")
         search(current, term)
@@ -169,7 +168,7 @@ def writeToFile(file):
             with open(file+".txt", 'w') as out:
 
                 out.write(f.read())
-
+        print("File found at: " + file + ".txt")
     except FileNotFoundError:
         print("Uh oh.. you probably typed this file wrong. Please enter filename and extension only.")
 
