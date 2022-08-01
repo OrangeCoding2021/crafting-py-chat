@@ -5,12 +5,8 @@ By extending this idea, I hope to create a functional program that is easy to us
 This program can also be used to look at contents of any text file zipped by gzip I assume.
 
 # Features
-~ Displaying all the contents of a log file in the console
-~ Displaying file by pages
-~ Directory searching options
+- Displaying all the contents of a log file in the console
+- Displaying file by pages
+- Directory searching options
 - File Search options
-- Writing the contents to a unzipped file
--
-
-
--
+- Writing the contents to a text

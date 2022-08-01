@@ -33,12 +33,6 @@ def displayMenu():
     print(menu)
 
 
-def writeAllAll(dirOf):
-    """Write all files in a given directory to txt files"""
-    for i in os.listdir(dirOf):
-        writeToFile(os.path.join(dirOf, i))
-
-
 def menu(dirOf, file):
     """
     dirOf - directory in use
@@ -192,6 +186,13 @@ def getDirAndFile(dirOf=0, file=0):
         file = input()
 
     return dirOf, file
+
+
+def writeAllAll(dirOf):
+    """Write all files in a given directory to txt files"""
+    for i in os.listdir(dirOf):
+        if ".gz" in os.path.splitext(os.path.join(dirOf, i))[-1]:
+            writeToFile(os.path.join(dirOf, i))
 
 
 if __name__ == '__main__':
