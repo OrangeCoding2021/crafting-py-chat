@@ -1,6 +1,8 @@
 # crafing-py-chat
 Minecraft stores old chat logs in Gzip .log files. To escape having to manually unzip these files with another program, I created a Python script to do it for me.
-By extending this idea, I hope to create a functional program that is easy to use anytime I feel like looking through my old Minecraft chat logs
+By extending this idea, I hope to create a functional program that is easy to use anytime I feel like looking through my old Minecraft chat logs.
+
+This program can also be used to look at contents of any text file zipped by gzip I assume.
 
 # Features
 ~ Displaying all the contents of a log file in the console
@@ -8,12 +10,7 @@ By extending this idea, I hope to create a functional program that is easy to us
 ~ Directory searching options
 - File Search options
 - Writing the contents to a unzipped file
-- 
+-
 
-# To-do
-+ Config file/ Options 0%
-+ Automatic detection of errors in directory or file names 0%
-- Fix name of file write all is put to 0%
-- List index out of range error on listing items in directory after every file was listed (#/#) 0%
-- Previous issue appears to be possibly happening sometimes on displaying in sections as well
+
 -
