@@ -32,10 +32,13 @@ def displayMenu():
     """
     print(menu)
 
+
 def writeAllAll(dirOf):
+    """Write all files in a given directory to txt files"""
     for i in os.listdir(dirOf):
-        writeToFile(dirOf+i)
-        
+        writeToFile(os.path.join(dirOf, i))
+
+
 def menu(dirOf, file):
     """
     dirOf - directory in use
@@ -45,7 +48,7 @@ def menu(dirOf, file):
     answer = input("Enter a menu choice: ")
 
     # Directory the current file is found + the file name
-    current = dirOf + file
+    current = os.path.join(dirOf, file)
     print(current)
     if answer == '1':
 
@@ -53,7 +56,7 @@ def menu(dirOf, file):
     elif answer == '2':
         writeToFile(current)
     elif answer == '3':
-        sects = int(input("how many lines display at a time?: "))
+        sects = int(input("Enter how many lines to display at a time: "))
         dispSections(current, sects)
     elif answer == '4':
 
@@ -176,11 +179,18 @@ def getDirAndFile(dirOf=0, file=0):
     # Change the directory or file name being used. if left blank keep the currently used one.
     currentInp = input("Directory: ")
     if currentInp != '':
-        dirOf = currentInp
+        dirOf = os.path.normcase(currentInp)
+
+    while not os.path.isdir(dirOf):
+        print("Please input directory again in a accepted format")
+        dirOf = os.path.normcase(input())
 
     currentInp = input("File name: ")
     if currentInp != '':
         file = currentInp
+    while not os.path.isfile(os.path.join(dirOf, file)):
+        print("Please input file again in a accepted format")
+        file = input()
 
     return dirOf, file
 

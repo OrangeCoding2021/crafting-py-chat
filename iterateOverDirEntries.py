@@ -9,7 +9,7 @@ import os
 import gzip as g
 
 
-def fullSearch(term, path='', dateStart=0, dateEnd=0):
+def fullSearch(term, path, dateStart=0, dateEnd=0):
     """
     term - string to search
     path - directory the search
@@ -21,7 +21,7 @@ def fullSearch(term, path='', dateStart=0, dateEnd=0):
     # Get list of items in dir, for each item do the following
     for i in os.listdir(path):
         print("Searching... " + str(i))
-        search(path+i, term)
+        search(os.path.join(path, i), term)
 
 
 def search(file, term):
