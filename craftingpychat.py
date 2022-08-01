@@ -24,6 +24,7 @@ def displayMenu():
 5. List files in a directory
 6. Search a whole file
 7. Search a whole directory
+8. Write All All
 -------------------------------------------------
 
 
@@ -31,7 +32,10 @@ def displayMenu():
     """
     print(menu)
 
-
+def writeAllAll(dirOf):
+    for i in os.listdir(dirOf):
+        writeToFile(dirOf+i)
+        
 def menu(dirOf, file):
     """
     dirOf - directory in use
@@ -42,6 +46,7 @@ def menu(dirOf, file):
 
     # Directory the current file is found + the file name
     current = dirOf + file
+    print(current)
     if answer == '1':
 
         displayAll(current)
@@ -62,7 +67,8 @@ def menu(dirOf, file):
     elif answer == '7':
         term = input("Search Term: ")
         fullSearch(term, dirOf, 0, 0)
-
+    elif answer == '8':
+        writeAllAll(dirOf)
     else:
         print("Invalid Option")
 
