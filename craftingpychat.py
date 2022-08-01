@@ -100,13 +100,14 @@ def listDirInSections(path='', sects=10):
         if skip == 'e':
             print("exiting...")
             break
+
         # For the remaining items after the safe loop. Could maybe move this out of the for i loop?
         # Maybe not once a back option is implemented? Perhaps look at another page method?
         if not count+sects <= leng:
             for line in dirList[count:count+left]:
                 print(line)
                 count += 1
-            print(f"Lines displayed: {count}/{leng}")
+            print(f"Current Place: {count}/{leng}")
 
 
 def dispSections(file, sects):
@@ -133,7 +134,15 @@ def dispSections(file, sects):
                     count += 1
 
                 skip = input(
-                    f"Hit any key to continue. Lines displayed so far: {count}/{leng}")
+                    f"Enter to continue. 'e' to exit. Integer to jump to around that line. Lines displayed so far: {count}/{leng}")
+
+                if skip == 'e':
+                    print("exiting...")
+                    break
+                elif skip.isdigit() and int(skip) <= leng:
+                    count = int(skip)-int(leng/2)
+                else:
+                    pass
                 if not count+sects <= leng:
                     for line in fList[count:count+left]:
                         print(line)
