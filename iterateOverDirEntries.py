@@ -20,8 +20,10 @@ def fullSearch(term, path, dateStart=0, dateEnd=0):
     """
     # Get list of items in dir, for each item do the following
     for i in os.listdir(path):
-        print("Searching... " + str(i))
-        search(os.path.join(path, i), term)
+        # Validate file type
+        if ".gz" in os.path.splitext(os.path.join(path, i))[-1]:
+            print("Searching... " + str(i))
+            search(os.path.join(path, i), term)
 
 
 def search(file, term):
