@@ -236,22 +236,40 @@ def writeToFile(file):
 
 def getDirAndFile(dirOf=0, file=0):
 
-    # Change the directory or file name being used. if left blank keep the currently used one.
+    # Change the directory or file name being used. if left blank set to default.
+    print("Please input directory or leave blank for default")
     currentInp = input("Directory: ")
     if currentInp != "":
         dirOf = os.path.normcase(currentInp)
+    elif currentInp == "":
+        dirOf = os.path.normcase = "C:\\Users\\"+os.getlogin()+"\\AppData\\Roaming\\.minecraft\\logs"
+        print(dirOf)
 
     while not os.path.isdir(dirOf):
         print("Please input directory again in a accepted format")
         dirOf = os.path.normcase(input())
 
+    # Gets all files in directory
+    fileslists = [f for f in os.listdir(str(dirOf)) if os.path.isfile(os.path.join(str(dirOf), f))] 
+    # Creates a copy of the list because you cannot (reliably) modify a list while it is in use
+    fileslistscopy = fileslists.copy()
+    for x in fileslists:
+        tmp = str(x).split(".")
+        if "debug" in x or "latest" in x or tmp[-1] != "gz": # removes all entries that are not .gz or have debug/latest in the name
+            fileslistscopy.remove(x)
+    del fileslists # Cleanup
+    print("Please input File name or leave blank for most recent found ("+str(fileslistscopy[-1])+")")
     currentInp = input("File name: ")
     if currentInp != "":
         file = currentInp
+    elif currentInp == "":
+        file = fileslistscopy[-1]
+
     while not os.path.isfile(os.path.join(dirOf, file)):
         print("Please input file again in a accepted format")
         file = input()
 
+    del fileslistscopy # Cleanup
     return dirOf, file
 
 
