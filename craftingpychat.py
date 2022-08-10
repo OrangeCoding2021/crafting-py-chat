@@ -24,7 +24,7 @@ def displayMenu():
 5. List files in a directory
 6. Search a whole file
 7. Search a whole directory
-8. Write All All
+8. Write all .gz files to .txt files
 -------------------------------------------------
 
 
@@ -46,7 +46,7 @@ def menu(dirOf, file):
     print(current)
     if answer == '1':
 
-        displayAll(current)
+        print("Option disabled for time being. Use display sections instead. ")
     elif answer == '2':
         writeToFile(current)
     elif answer == '3':
@@ -54,7 +54,7 @@ def menu(dirOf, file):
         dispSections(current, sects)
     elif answer == '4':
 
-        dirOf, file = getDirAndFile()
+        dirOf, file = getDirAndFile(dirOf, file)
     elif answer == '5':
         listDirInSections(dirOf)
     elif answer == '6':
@@ -113,7 +113,7 @@ def listDirInSections(path='', sects=10):
 def dispSections(file, sects):
     """
     file - file to display
-    sects - how many items to display per page
+    sects - how many sections(lines) to display per page
 
     Displays contents of desired file in pages"""
     # Try to open a gzip file, if not open it as a file. (Possibly a better way to check the file type beforehand?)
@@ -123,37 +123,88 @@ def dispSections(file, sects):
             fList = list(f)
             leng = len(fList)
             print(str(leng))
-            amount = leng//sects
-            left = leng % sects
-            count = 0
-            # For each length of sections
-            for i in range(amount):
 
-                for j in range(sects):
-                    print(fList[count])
-                    count += 1
+            # Initialize variables
+            firstSplitPt = 0
+            lastPt = sects
+            continueDisplay = True
+            # For each length of sections
+            while continueDisplay:
+
+                for line in fList[firstSplitPt:lastPt]:
+                    print(line)
+                count = lastPt
+
+                #print(f"1st{firstSplitPt}last {lastPt}")
+
+                # Update the two end counters accordingly
 
                 skip = input(
-                    f"Enter to continue. 'e' to exit. Integer to jump to around that line. Lines displayed so far: {count}/{leng}")
+                    f"Enter to continue. 'e' to exit. Integer to jump to around that line. Lines: {firstSplitPt+1} to {lastPt} End: {leng}.")
 
                 if skip == 'e':
                     print("exiting...")
                     break
-                elif skip.isdigit() and int(skip) <= leng:
-                    count = int(skip)-int(leng/2)
+                # If string entered is a digit, jump to around that line
+                elif skip.isdigit() and int(skip) <= leng and int(skip) >= 0:
+                    skip = int(skip)
+                    firstSplitPt = skip-int(sects/2)
+                    if firstSplitPt < 0:
+                        firstSplitPt = 0
+                    elif firstSplitPt > leng+1:
+                        firstSplitPt = leng + 1
+
+                    lastPt = firstSplitPt + sects
                 else:
+                    firstSplitPt += sects
+                    lastPt += sects
                     pass
-                if not count+sects <= leng:
-                    for line in fList[count:count+left]:
-                        print(line)
-                        count += 1
-                    print(f"Lines displayed: {count}/{leng}")
+
+                if lastPt > leng+1:
+                    lastPt = leng+1
+                # for j in range(sects):
+                #     print(fList[count])
+                #     count += 1
+                #
+                # skip = input(
+                #     f"Enter to continue. 'e' to exit. Integer to jump to around that line. Lines displayed so far: {count}/{leng}")
+                #
+                # if skip == 'e':
+                #     print("exiting...")
+                #     break
+                # # If string entered is a digit, jump to around that line
+                # elif skip.isdigit() and int(skip) <= leng:
+                #     skip = int(skip)
+                #     count = skip-int(sects/2)
+                # else:
+                #     pass
+                # # Handle where the first pt will be
+                # firstSplitPt = count-int(sects/2)
+                # if firstSplitPt >= leng:
+                #     firstSplitPt = leng
+                #     lastPt = leng+1
+                # elif firstSplitPt <= 0:
+                #     firstSplitPt = 0
+                # lastPt = count+int(sects/2)
+                # if lastPt > leng+1:
+                #     lastPt = leng+1
+                # elif lastPt < sects:
+                #     lastPt = sects
+                # else:
+                #     pass
+                #
+                # for line in fList[firstSplitPt:lastPt]:
+                #     print(line)
+                # count = lastPt
+                # print(f"Lines displayed: {count}/{leng}")
+                # print(f"1st{firstSplitPt}last {lastPt}")
 
     except FileNotFoundError:
         print("Uh oh.. you probably typed this file wrong. Please enter filename and extension only.")
 
 
 def displayAll(file):
+    """Display all lines of the file"""
     try:
         # Open GZip file in the read text mode
         with g.open(file, 'rt') as f:
@@ -167,11 +218,18 @@ def displayAll(file):
 
 def writeToFile(file):
     try:
-        with g.open(file, 'rt') as f:
-            with open(file+".txt", 'w') as out:
+        try:
 
-                out.write(f.read())
-        print("File found at: " + file + ".txt")
+            with open(file+"-craftPyChat.txt", 'r') as out:
+                print(".txt version already exists!")
+
+        except:
+            with g.open(file, 'rt') as f:
+                with open(file+"-craftPyChat.txt", 'w') as out:
+
+                    out.write(f.read())
+                print("File written to: " + file + ".txt")
+
     except FileNotFoundError:
         print("Uh oh.. you probably typed this file wrong. Please enter filename and extension only.")
 
@@ -180,7 +238,7 @@ def getDirAndFile(dirOf=0, file=0):
 
     # Change the directory or file name being used. if left blank keep the currently used one.
     currentInp = input("Directory: ")
-    if currentInp != '':
+    if currentInp != "":
         dirOf = os.path.normcase(currentInp)
 
     while not os.path.isdir(dirOf):
@@ -188,7 +246,7 @@ def getDirAndFile(dirOf=0, file=0):
         dirOf = os.path.normcase(input())
 
     currentInp = input("File name: ")
-    if currentInp != '':
+    if currentInp != "":
         file = currentInp
     while not os.path.isfile(os.path.join(dirOf, file)):
         print("Please input file again in a accepted format")
